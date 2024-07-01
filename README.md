@@ -34,7 +34,7 @@ Item similarities are calculated on demand when an item is selected.
 Cosine similarity is used to find the top-N similar items.
 
 # Dataset
-LINK:https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
+LINK: https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
 ## Dataset Files
 * ratings.csv: User ratings for movies.
 * movies.csv: Metadata about the movies.
