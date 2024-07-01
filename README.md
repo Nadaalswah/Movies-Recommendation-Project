@@ -1,5 +1,4 @@
 # Movies Recommendation System Project 🎬
-<br>
 This project presents a comprehensive movie recommendation system utilizing the MovieLens dataset. Leveraging advanced recommendation algorithms, the system offers personalized movie suggestions and computes item similarities. Additionally, it includes an interactive Streamlit dashboard that allows users to engage with and explore their personalized recommendations and discover similar movies effortlessly.
 <br>
 
@@ -20,7 +19,6 @@ This project presents a comprehensive movie recommendation system utilizing the 
 
 # Recommender Models
 ## User Recommender
-
 ### Models Used:
 * Singular Value Decomposition (SVD)
 * Neural Collaborative Filtering (NCF)
@@ -35,7 +33,14 @@ Calculation Method:
 Item similarities are calculated on demand when an item is selected.
 Cosine similarity is used to find the top-N similar items.
 
-
+# Dataset
+LINK:https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
+## Dataset Files
+* ratings.csv: User ratings for movies.
+* movies.csv: Metadata about the movies.
+* links.csv: Identifiers that can be used to link to other sources of movie data.
+* tags.csv: User-generated tags for movies.
+  
 # Contributors
 1. Nada Abd Alfatah
 2. Adel Mamoun
