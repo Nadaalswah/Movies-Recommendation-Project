@@ -43,7 +43,6 @@ def recommenderMovie(movie , similarity_mat , movies_data , k) -> list:
 
 @st.cache_resource()
 def get_movie_details(movie_id, df_movies, df_ratings, df_links):
-    print(movie_id, df_movies.shape, df_ratings.shape, df_links.shape)
     try:
         # Get IMDb ID and TMDB ID for the movie
         imdb_id = df_links[df_links['movieId'] == movie_id]['imdbId'].values[0]
@@ -55,27 +54,25 @@ def get_movie_details(movie_id, df_movies, df_ratings, df_links):
         # Extract genres from the genres column (assuming genres are separated by '|')
         genres = movie_data['genres'].split('|') if 'genres' in movie_data else []
 
-        # Calculate average rating and number of ratings
-        avg_rating = df_ratings[df_ratings['movieId'] == movie_id]['rating'].mean()
-
-        num_ratings = df_ratings[df_ratings['movieId'] == movie_id].shape[0]
-
         # Fetch poster image URL using TMDB API
         api_key = 'b8c96e534866701532768a313b978c8b'   # Replace with your TMDB API key
         response = requests.get(f'https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={api_key}')
-        print('()' * 20)
-        poster_url = response.json().get('poster_path', '')
+
+        response = response.json()
+        poster_url = response.get('poster_path', '')
         full_poster_url = f'https://image.tmdb.org/t/p/w500{poster_url}' if poster_url else ''
 
         # Return movie details as a dictionary
         return {
-            "title": movie_data['title'],
+            "title": response['original_title'],
             "genres": genres,
-            "avg_rating": round(avg_rating, 2),
-            "num_ratings": num_ratings,
+            "avg_rating": round(response['vote_average'], 1),
+            "num_ratings": response['vote_count'],
             "imdb_id": imdb_id,
             "tmdb_id": tmdb_id,
-            "poster_url": full_poster_url
+            "poster_url": full_poster_url,
+            "overview" : response['overview'],
+            "release_date" : response['release_date']
         }
     except Exception as e:
         st.error(f"Error fetching details for movie ID {movie_id}: {e}")
@@ -116,9 +113,9 @@ if btn:
                 poster_url = movie_data.get('poster_url')
 
                 with cols[col]:
-                    # st.write(movie_title)  # Display movie title above the poster
-                    st.markdown(f"<h5 style='text-align: center; color: white;'>{movie_title}</h5>", unsafe_allow_html=True)
-
                     # st.image(poster_url, width=150)
                     st.markdown(f"""<img src='{poster_url}' width='200' style='display: block; 
                                 margin: 0 auto; margin-bottom: 25px'>""" , unsafe_allow_html=True)
+                    
+                    # st.write(movie_title)  # Display movie title above the poster
+                    st.markdown(f"<h5 style='text-align: center; color: white;'>{movie_title}</h5>", unsafe_allow_html=True)
