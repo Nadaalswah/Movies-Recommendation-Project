@@ -106,6 +106,7 @@ for row in range(nRows):
                             margin: 0 auto; margin-bottom: 25px'>""" , unsafe_allow_html=True)
                 st.write(movie_title)  # Display movie title above the poster
 ######################################### Explorer #########################################
+st.divider()
 st.subheader("Movie Explorer")
 form1 = st.form(key='options')
 
