@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
 import requests
+import os.path
+
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import MinMaxScaler
 
 # Streamlit app configuration
 st.set_page_config(layout="wide", 
@@ -22,11 +26,25 @@ def load_data() -> tuple[pd.DataFrame]:
     return movies, ratings, tags, links, movies_ratings, users, movie_titles
 
 @st.cache_resource()
-def load_sim_mat() -> pd.DataFrame:
+def load_sim_mat(movies_ratings) -> pd.DataFrame:
+    if os.path.exists("similarity_df.csv"):
+        return pd.read_csv("similarity_df.csv").set_index('movieId')
+    
+    utility_matrix = movies_ratings.pivot_table(index='userId',columns='movieId',values='rating').fillna(0)
+
+    scaler=MinMaxScaler()
+    utility_matrix_scaled=scaler.fit_transform(utility_matrix)
+
+    item_item_similarity = cosine_similarity(utility_matrix_scaled.T)
+
+    similarity_df=pd.DataFrame(item_item_similarity,index=utility_matrix.columns,columns=utility_matrix.columns)
+
+    similarity_df = pd.DataFrame(item_item_similarity, index=utility_matrix.columns, columns=utility_matrix.columns)
+    similarity_df.to_csv('similarity_df.csv')
     return pd.read_csv("similarity_df.csv").set_index('movieId')
 
 movies, ratings, tags, links, movies_ratings, users, movie_titles = load_data()
-sim_mat = load_sim_mat()
+sim_mat = load_sim_mat(movies_ratings)
 
 ######################################### Processing #########################################
 @st.cache_resource()
