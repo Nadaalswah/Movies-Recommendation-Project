@@ -8,7 +8,7 @@ This project presents a comprehensive movie recommendation system utilizing the 
 *  User Selection: Dropdown to select users.
 *  User History: Displays user interactions.
 *  Top-N Recommendations: List of top-N items recommended for the user.
-*  Navigation: Navigate through recommendations.
+*  Navigation: Navigate through recommendations..
 
 ## Item Page
 
